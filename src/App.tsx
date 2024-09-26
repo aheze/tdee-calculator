@@ -9,15 +9,17 @@ import { Button } from '@/components/ui/button';
 const TDEECalculator = () => {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('male');
-  const [height, setHeight] = useState('');
+  const [heightFeet, setHeightFeet] = useState('');
+  const [heightInches, setHeightInches] = useState('');
   const [weight, setWeight] = useState('');
   const [activityLevel, setActivityLevel] = useState('sedentary');
   const [tdee, setTDEE] = useState(null);
 
   const calculateTDEE = () => {
-    const heightCm = parseFloat(height);
-    const weightKg = parseFloat(weight);
-    const ageYears = parseFloat(age);
+    const heightInchesTotal = (parseInt(heightFeet) * 12) + parseInt(heightInches);
+    const heightCm = heightInchesTotal * 2.54;
+    const weightKg = parseInt(weight) / 2.20462;
+    const ageYears = parseInt(age);
 
     let bmr;
     if (gender === 'male') {
@@ -64,11 +66,28 @@ const TDEECalculator = () => {
               </RadioGroup>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="height">Height (cm)</Label>
-              <Input id="height" type="number" value={height} onChange={(e) => setHeight(e.target.value)} />
+              <Label>Height</Label>
+              <div className="flex space-x-2">
+                <div className="flex-1">
+                  <Input
+                    type="number"
+                    placeholder="Feet"
+                    value={heightFeet}
+                    onChange={(e) => setHeightFeet(e.target.value)}
+                  />
+                </div>
+                <div className="flex-1">
+                  <Input
+                    type="number"
+                    placeholder="Inches"
+                    value={heightInches}
+                    onChange={(e) => setHeightInches(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="weight">Weight (kg)</Label>
+              <Label htmlFor="weight">Weight (lbs)</Label>
               <Input id="weight" type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
             </div>
             <div className="space-y-2">
